@@ -17,17 +17,22 @@ How to
 
 ``` php
     $this->pagecache = new Pagecache();
-    $this->pagecache->setResponse($this->response);
     $this->pagecache->setRequest($this->request);
 ```
 
 4. Add this code to the Controller_Template 'after' function:
-   (inside auto_render snippet)
 
 ``` php    
+
+    $response = parent::after($response);
+
+    $this->pagecache->setResponse($response);
+
     if ($this->pagecache->isCacheable()) {
        $this->pagecache->cache($_SERVER['REQUEST_URI']);
     }
+
+    return $response;
 ```
     
 5. Enable cache in your controller
